@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genshin Music Player</title>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+        
+        /* --- CẤU HÌNH NÚT BẤM --- */
+        #player-btn {
+            position: fixed;
+            bottom: 10px; /* Cách đáy 10px */
+            left: 10px;   /* Cách trái 10px */
+            width: 50px;
+            height: 50px;
+            /* Màu nền: Tím đậm Genshin */
+            background: rgba(46, 49, 146, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Khi rê chuột vào */
+        #player-btn:hover {
+            transform: scale(1.1);
+            background: rgba(46, 49, 146, 1);
+            box-shadow: 0 0 15px rgba(100, 149, 237, 0.6);
+        }
+
+        /* --- TRẠNG THÁI ĐANG PHÁT (PLAYING) --- */
+        #player-btn.playing {
+            /* Đổi sang viền vàng kim */
+            border-color: #ffd700; 
+            /* Hiệu ứng xoay tròn */
+            animation: spin 6s linear infinite;
+            /* Phát sáng nhẹ */
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Icon bên trong */
+        #icon {
+            width: 24px; height: 24px; fill: white; transition: fill 0.3s;
+        }
+        #player-btn.playing #icon { fill: #ffd700; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- ẨN VIDEO YOUTUBE (Chỉ lấy tiếng) --- */
+        #yt-embed {
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 1px; height: 1px; 
+            opacity: 0.01; /* Để 0.01 để trình duyệt không chặn */
+            pointer-events: none; 
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="player-btn" title="Bật/Tắt Nhạc Nền">
+        <svg id="icon" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+    </div>
+
+    <div id="yt-embed"></div>
+
+    <script>
+        // --- CẤU HÌNH LOGIC ---
+        var player;
+        var isPlaying = false;
+        var btn = document.getElementById('player-btn');
+        var VIDEO_ID = 'D-ocSsuMETI'; // ID video mới của bạn
+
+        // 1. Tải YouTube IFrame API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 2. Khởi tạo Player
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('yt-embed', {
+                height: '1',
+                width: '1',
+                videoId: VIDEO_ID,
+                playerVars: {
+                    'playsinline': 1,
+                    'controls': 0,     // Tắt điều khiển
+                    'disablekb': 1,    // Tắt phím tắt
+                    'fs': 0,           // Tắt full screen
+                    'loop': 1,         // Bật lặp lại
+                    'playlist': VIDEO_ID // Mẹo: Muốn loop 1 bài thì phải điền playlist = ID bài đó
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 3. Xử lý sự kiện Play/Pause
+        function onPlayerStateChange(event) {
+            // Nếu đang phát (State = 1)
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                btn.classList.add('playing');
+            } 
+            // Nếu tạm dừng (2) hoặc kết thúc (0)
+            else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                isPlaying = false;
+                btn.classList.remove('playing');
+            }
+        }
+
+        // 4. Bắt sự kiện bấm nút
+        btn.addEventListener('click', function() {
+            if (player && typeof player.playVideo === 'function') {
+                if (isPlaying) {
+                    player.pauseVideo();
+                } else {
+                    player.playVideo();
+                }
+            } else {
+                // Trường hợp mạng chậm, API chưa tải xong
+                console.log("Player chưa sẵn sàng...");
+            }
+        });
+    </script>
+</body>
+</html>
