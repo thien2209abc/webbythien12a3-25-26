@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu Nhóm 3</title>
+    <!-- Thư viện Tailwind CSS để làm giao diện đẹp nhanh chóng -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Thư viện FontAwesome cho các icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Phông chữ Tiếng Việt đẹp -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Tùy chỉnh CSS thêm */
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f8fafc; /* Màu nền xám rất nhạt dễ nhìn */
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        /* Hiệu ứng thanh cuộn đẹp hơn */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Hiệu ứng Card thành viên */
+        .member-card {
+            background: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #6366f1; /* Màu viền khi hover */
+        }
+
+        /* Hiệu ứng Avatar */
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+        .avatar-container::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .member-card:hover .avatar-container::after {
+            opacity: 1;
+            animation: spin-slow 3s linear infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Hiệu ứng Nút */
+        .btn-profile {
+            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+        .btn-profile:hover {
+            background: linear-gradient(90deg, #4338ca 0%, #6d28d9 100%);
+            padding-right: 1.5rem; /* Hiệu ứng kéo dài nút */
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        }
+        .btn-profile i {
+            transition: transform 0.3s ease;
+        }
+        .btn-profile:hover i {
+            transform: translateX(4px);
+        }
+
+        /* Trang trí nền */
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background-image: radial-gradient(#e0e7ff 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nền trang trí chấm bi -->
+    <div class="bg-decoration"></div>
+
+    <div class="container mx-auto px-4 py-12 max-w-7xl">
+        
+        <!-- PHẦN 1: GIỚI THIỆU CHUNG -->
+        <header class="text-center mb-16 animate-fade-in-down">
+            <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold mb-4 tracking-wide uppercase">
+                Chào mừng đến với
+            </span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 mb-6 leading-tight">
+                Nhóm 3 - <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Đội Ngũ Tiên Phong</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                Chúng tôi là tập hợp của 11 cá nhân đầy nhiệt huyết và sáng tạo. 
+                Với tinh thần đoàn kết và trách nhiệm, Nhóm 3 cam kết mang lại những sản phẩm chất lượng nhất 
+                và không ngừng học hỏi để vươn xa hơn. Dưới đây là thông tin chi tiết về các thành viên của chúng tôi.
+            </p>
+            <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 mx-auto mt-8 rounded-full"></div>
+        </header>
+
+        <!-- PHẦN 2: DANH SÁCH THÀNH VIÊN -->
+        <!-- Container chứa các thẻ thành viên, ID này dùng để Javascript điền nội dung vào -->
+        <div id="members-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Nội dung sẽ được Javascript tự động tạo ra tại đây -->
+        </div>
+
+    </div>
+
+    <!-- SCRIPT XỬ LÝ DỮ LIỆU VÀ HIỂN THỊ -->
+    <script>
+        // =========================================================================
+        // KHU VỰC CHỈNH SỬA THÔNG TIN THÀNH VIÊN
+        // Bạn hãy sửa thông tin trong dấu ngoặc kép "" 
+        // =========================================================================
+        
+        const membersData = [
+            // 1. TRƯỞNG NHÓM
+            {
+                name: "Nguyễn Văn A",
+                // Link avatar nam: dùng seed=Felix, Jack, Jude, v.v.
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Felix", 
+                dob: "01/01/2008",
+                role: "Trưởng Nhóm",
+                gender: "Nam",
+                desc: "Chịu trách nhiệm chung, lập kế hoạch và phân công nhiệm vụ. Có khả năng lãnh đạo và quản lý thời gian.",
+                link: "https://sites.google.com/view/trang-con-thanh-vien-1",
+                highlight: true
+            },
+            // 2. PHÓ NHÓM
+            {
+                name: "Trần Thị B",
+                // Link avatar nữ: dùng seed=Aneka, Doe, Annie, v.v.
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Aneka", 
+                dob: "01/01/2008",
+                role: "Phó Nhóm",
+                gender: "Nữ",
+                desc: "Hỗ trợ trưởng nhóm đôn đốc tiến độ, quản lý nhân sự và giải quyết các vấn đề nội bộ.",
+                link: "#",
+                highlight: true
+            },
+            // 3. THƯ KÝ
+            {
+                name: "Lê Thị C",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Annie", 
+                dob: "01/01/2008",
+                role: "Thư Ký",
+                gender: "Nữ",
+                desc: "Ghi chép biên bản cuộc họp, tổng hợp báo cáo và quản lý giấy tờ, tài liệu của nhóm.",
+                link: "#" 
+            },
+            // 4. KỸ THUẬT (IT)
+            {
+                name: "Phạm Văn D",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Christopher", 
+                dob: "01/01/2008",
+                role: "Kỹ Thuật",
+                gender: "Nam",
+                desc: "Phụ trách thiết kế website, xử lý các vấn đề về máy tính, phần mềm và kỹ thuật số.",
+                link: "#" 
+            },
+            // 5. THIẾT KẾ (DESIGNER)
+            {
+                name: "Hoàng Thị E",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Elisa", 
+                dob: "01/01/2008",
+                role: "Thiết Kế",
+                gender: "Nữ",
+                desc: "Sáng tạo hình ảnh, thiết kế slide thuyết trình và các ấn phẩm truyền thông cho nhóm.",
+                link: "#" 
+            },
+            // 6. NỘI DUNG (CONTENT)
+            {
+                name: "Vũ Văn F",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Brian", 
+                dob: "01/01/2008",
+                role: "Nội Dung",
+                gender: "Nam",
+                desc: "Viết bài, biên tập nội dung cho báo cáo và kịch bản thuyết trình. Khả năng ngôn ngữ tốt.",
+                link: "#" 
+            },
+            // 7. HẬU CẦN
+            {
+                name: "Đặng Thị G",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Jocelyn", 
+                dob: "01/01/2008",
+                role: "Hậu Cần",
+                gender: "Nữ",
+                desc: "Chuẩn bị dụng cụ, thiết bị và lo liệu các công tác chuẩn bị cho các buổi họp hoặc sự kiện.",
+                link: "#" 
+            },
+            // 8. THÀNH VIÊN
+            {
+                name: "Bùi Văn H",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Aiden", 
+                dob: "01/01/2008",
+                role: "Thành Viên",
+                gender: "Nam",
+                desc: "Tham gia tích cực vào các hoạt động nhóm, đóng góp ý kiến và hoàn thành tốt nhiệm vụ được giao.",
+                link: "#" 
+            },
+            // 9. THÀNH VIÊN
+            {
+                name: "Đỗ Thị I",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Maria", 
+                dob: "01/01/2008",
+                role: "Thành Viên",
+                gender: "Nữ",
+                desc: "Năng động, nhiệt tình, luôn sẵn sàng hỗ trợ các thành viên khác trong công việc chung.",
+                link: "#" 
+            },
+            // 10. THÀNH VIÊN
+            {
+                name: "Ngô Văn K",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Nolan", 
+                dob: "01/01/2008",
+                role: "Thành Viên",
+                gender: "Nam",
+                desc: "Cẩn thận, tỉ mỉ, có trách nhiệm cao trong công việc và hòa đồng với mọi người.",
+                link: "#" 
+            },
+            // 11. THÀNH VIÊN
+            {
+                name: "Dương Văn L",
+                avatar: "https://api.dicebear.com/9.x/avataaars/svg?seed=Micah", 
+                dob: "01/01/2008",
+                role: "Thành Viên",
+                gender: "Nam",
+                desc: "Sôi nổi, hoạt bát, là nhân tố khuấy động phong trào và gắn kết các thành viên.",
+                link: "#" 
+            },
+        ];
+
+        // =========================================================================
+        // KHÔNG CẦN SỬA PHẦN DƯỚI NÀY (CODE XỬ LÝ GIAO DIỆN)
+        // =========================================================================
+
+        const container = document.getElementById('members-container');
+
+        // Hàm lấy màu thẻ dựa trên chức vụ (Tùy chọn nâng cao)
+        function getRoleBadgeColor(role) {
+            if (role.toLowerCase().includes('trưởng')) return 'bg-red-100 text-red-700 border-red-200';
+            if (role.toLowerCase().includes('thư ký')) return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+            if (role.toLowerCase().includes('kỹ thuật')) return 'bg-blue-100 text-blue-700 border-blue-200';
+            return 'bg-slate-100 text-slate-600 border-slate-200';
+        }
+
+        // Hàm render từng thẻ
+        membersData.forEach((member, index) => {
+            // Tạo icon giới tính
+            const genderIcon = member.gender === 'Nam' 
+                ? '<i class="fa-solid fa-mars text-blue-500"></i>' 
+                : '<i class="fa-solid fa-venus text-pink-500"></i>';
+
+            // Xử lý highlight cho nhóm trưởng
+            const borderClass = member.highlight ? 'border-indigo-500 ring-2 ring-indigo-100' : 'border-gray-100';
+
+            const html = `
+                <div class="member-card rounded-2xl p-6 flex flex-col items-center text-center h-full ${borderClass}" style="animation: fadeIn 0.5s ease-out ${index * 0.1}s both;">
+                    
+                    <!-- Avatar -->
+                    <div class="avatar-container mb-4 w-28 h-28 flex-shrink-0">
+                        <img src="${member.avatar}" alt="${member.name}" class="w-full h-full rounded-full object-cover border-4 border-white shadow-md bg-gray-50">
+                    </div>
+
+                    <!-- Tên & Chức vụ -->
+                    <div class="mb-4 w-full">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 border ${getRoleBadgeColor(member.role)}">
+                            ${member.role}
+                        </span>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1 truncate" title="${member.name}">${member.name}</h3>
+                        <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
+                            ${genderIcon}
+                            <span>${member.gender}</span>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin chi tiết -->
+                    <div class="w-full space-y-3 mb-6 text-left bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-cake-candles mt-1 text-indigo-400 w-4"></i>
+                            <span class="text-sm font-medium text-gray-600">${member.dob}</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-quote-left mt-1 text-indigo-400 w-4"></i>
+                            <p class="text-sm text-gray-600 italic line-clamp-3">${member.desc}</p>
+                        </div>
+                    </div>
+
+                    <!-- Nút bấm -->
+                    <!-- SỬA LỖI: Đổi target="_top" thành target="_blank" để mở tab mới, tránh bị Google Sites chặn -->
+                    <div class="mt-auto w-full">
+                        <a href="${member.link}" target="_blank" class="btn-profile w-full block py-2.5 rounded-lg text-white font-semibold text-sm shadow-md flex items-center justify-center gap-2 group">
+                            <span>Xem trang cá nhân</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // Chèn vào container
+            container.innerHTML += html;
+        });
+
+        // CSS Animation cho việc load trang
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
